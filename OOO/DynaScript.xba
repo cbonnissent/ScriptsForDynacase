@@ -167,6 +167,9 @@ Sub setDefaultOption()
 	  elseif (F.getCellByPosition(6,i).formula = &quot;array&quot; and F.getCellByPosition(15,i).formula = &quot;&quot;) then
 	  	F.getCellByPosition(15,i).formula = &quot;vlabel=up&quot;
 	  endif
+    elseif (F.getCellByPosition(6,i).formula = &quot;longtext&quot; and F.getCellByPosition(15,i).formula = &quot;&quot;) then
+      F.getCellByPosition(15,i).formula = &quot;editheight=4em&quot;
+    endif
   endif
   if (Empty &gt; 100) then Fin=true
   i=i+1
