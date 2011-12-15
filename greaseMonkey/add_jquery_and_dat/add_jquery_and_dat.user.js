@@ -1,12 +1,12 @@
 // ==UserScript==
-// @name           Add jQuery, Sugar and data and current Doc
+// @name           Add jQuery and APIdata and current Doc
 // @namespace      http://bonnissent.fr
 // @author        Charles bonnissent
 // @homepage      http://www.bonnissent.fr
 // @description    Insert the jQuery script so that we can run commands in Firebug
 // @include        http://*/*id=*
+// @include        https://*/*id=*
 // @resource    JQUERY_JS http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js
-// @resource    SUGAR_JS  https://raw.github.com/andrewplummer/Sugar/master/release/sugar-0.9.4.min.js
 // @resource    DATA_JS  https://wdesk.anakeen.com/lib/data/fdl-data.js
 // ==/UserScript==
 
@@ -21,7 +21,6 @@ function addJsInline(text) {
 
 
 addJsInline("if (window.jQuery == undefined) { "+GM_getResourceText ("JQUERY_JS")+"}");
-addJsInline(GM_getResourceText ("SUGAR_JS"));
 addJsInline(GM_getResourceText ("DATA_JS"));
 
 addJsInline("function getUrlVars() {\

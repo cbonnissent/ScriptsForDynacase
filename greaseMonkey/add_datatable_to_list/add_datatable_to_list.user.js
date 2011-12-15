@@ -4,6 +4,7 @@
 // @author        Charles bonnissent
 // @homepage      http://www.bonnissent.fr
 // @include        http://*/*dirid=*
+// @include        https://*/*dirid=*
 // @resource    JQUERY_JS http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js
 // @resource    DATATABLE  http://datatables.net/download/build/jquery.dataTables.js
 // @resource    DATATABLE_CSS  http://live.datatables.net/media/css/demo_table.css

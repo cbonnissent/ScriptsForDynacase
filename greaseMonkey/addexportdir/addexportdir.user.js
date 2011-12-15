@@ -2,6 +2,7 @@
 // @name           Export Me
 // @namespace      http://bonnissent.fr/
 // @include        http://*/*dirid=*
+// @include        https://*/*dirid=*
 // ==/UserScript==
 
 function getUrlVars() {

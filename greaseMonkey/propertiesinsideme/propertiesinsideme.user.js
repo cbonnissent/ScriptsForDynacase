@@ -2,6 +2,7 @@
 // @name           PropertiesInsideMe
 // @namespace      http://bonnissent.fr/
 // @include        http://*/*action=FDL_CARD*id=*
+// @include        https://*/*action=FDL_CARD*id=*
 // ==/UserScript==
 
 function getUrlVars() {

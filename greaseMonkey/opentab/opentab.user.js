@@ -2,6 +2,7 @@
 // @name           openTab
 // @namespace      http://bonnissent.fr/
 // @include        http://*/*id=*
+// @include        https://*/*id=*
 // ==/UserScript==
 
 function addJsInline(text) {
