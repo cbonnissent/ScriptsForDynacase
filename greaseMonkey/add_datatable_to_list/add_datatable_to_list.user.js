@@ -32,7 +32,7 @@ addJsInline(GM_getResourceText("DATATABLE"));
 //addCssInline(GM_getResourceText("DATATABLE_CSS"));
 
 addJsInline("$(document).ready( function() { \
-	var tab = $('#terrible');\
+	var tab = $('table#terrible');\
 var nbColomn = $(tab.find('tr')[0]).find('td').length;\
 var thead = '<thead><tr>';\
 for( var i = 0; i < nbColomn; i++) {\
