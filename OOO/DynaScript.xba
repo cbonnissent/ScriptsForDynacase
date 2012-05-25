@@ -1,232 +1,321 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
-<script:module xmlns:script="http://openoffice.org/2000/script" script:name="Module1" script:language="StarBasic">REM  *****  BASIC  *****
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="DynaScript" script:language="StarBasic">REM  *****  BASIC  *****
 
-sub FdlColor()
- dim F as object
- dim i as integer, j as integer, nbLig as integer, Lig as integer
- dim Color as long  , FColor as long
- dim Fin as boolean,Empty as integer
- dim EndLigne as integer
+sub color()
+  dim F as object
+  dim i as integer, j as integer, nbLig as integer, Lig as integer
+  dim Color as long  , FColor as long
+  dim Fin as boolean,Empty as integer
+  dim EndLigne as integer
 
- EndLigne = 255
- Fin=false
- Empty=0
- i=0
- F = thisComponent.currentController.ActiveSheet 
- while not Fin
-       Color=-1
-       FColor=-1
-       select Case F.getCellByPosition(0,i).formula
-         Case &quot;MODATTR&quot;
-           FColor=rgb(40,105,193)
-         Case &quot;DEFAULT&quot;
-           FColor=rgb(40,119,56)
-         Case &quot;END&quot;
-           Color=rgb(234,169,76)
-           FColor=rgb(0,0,0)
-         Case &quot;BEGIN&quot;
-           Color=rgb(234,169,76)
-           FColor=rgb(0,0,0)
-         Case &quot;ATTR&quot;
-           Color=rgb(255,255,255)
-           Color=-1
-           FColor=rgb(0,0,0)
-         Case &quot;PROFIL&quot;
-           Color=rgb(230,165,228)
-         Case &quot;ACCESS&quot;
-           Color=rgb(247,206,167)
-         Case &quot;ORDER&quot;
-           Color=rgb(250,237,86)
-         Case &quot;//&quot;
-           Color=rgb(247,240,167)
-         Case &quot;//ATTR&quot;
-           Color=rgb(247,240,167)
-       end select
-       select Case F.getCellByPosition(6,i).formula
-         Case &quot;frame&quot;
-           Color=rgb(204,255,204)
-         Case &quot;tab&quot;
-           Color=rgb(204,204,255)
-         Case &quot;array&quot;
-           Color=rgb(255,204,153)
-         Case &quot;array(&quot;&quot;empty&quot;&quot;)&quot;
-           Color=rgb(255,204,153)
-         Case &quot;menu&quot;
-           Color=rgb(230,230,255)
-         end select
-     if (Color &lt; 0) then F.getCellRangeByPosition(0,i,EndLigne,i).IsCellBackgroundTransparent=true
-     if (Color&gt;=0) then F.getCellRangeByPosition(0,i,EndLigne,i).CellBackColor=Color
-     if (FColor&gt;=0) then F.getCellRangeByPosition(0,i,EndLigne,i).CharColor=FColor
-   i=i+1
-   &apos;if (i&gt;10) then Fin=true
-   if (F.getCellByPosition(0,i).formula=&quot;&quot;) then  Empty=Empty+1 else Empty=0
-   if (Empty &gt; 20) then Fin=true
- wend
+  EndLigne = 255
+  Fin=false
+  Empty=0
+  i=0
+  F = thisComponent.currentController.ActiveSheet
+  while not Fin
+    Color=-1
+    FColor=-1
+    select Case F.getCellByPosition(0,i).formula
+      Case &quot;MODATTR&quot;
+        FColor=rgb(40,105,193)
+        Case &quot;DEFAULT&quot;
+          FColor=rgb(40,119,56)
+        Case &quot;END&quot;
+          Color=rgb(234,169,76)
+          FColor=rgb(0,0,0)
+        Case &quot;BEGIN&quot;
+          Color=rgb(234,169,76)
+          FColor=rgb(0,0,0)
+        Case &quot;ATTR&quot;
+          Color=rgb(255,255,255)
+          Color=-1
+          FColor=rgb(0,0,0)
+        Case &quot;PROFIL&quot;
+          Color=rgb(230,165,228)
+        Case &quot;ACCESS&quot;
+          Color=rgb(247,206,167)
+        Case &quot;ORDER&quot;
+          Color=rgb(250,237,86)
+        Case &quot;//&quot;
+          Color=rgb(247,240,167)
+        Case &quot;//ATTR&quot;
+          Color=rgb(247,240,167)
+      end select
+      select Case F.getCellByPosition(6,i).formula
+        Case &quot;frame&quot;
+          Color=rgb(204,255,204)
+        Case &quot;tab&quot;
+          Color=rgb(204,204,255)
+        Case &quot;array&quot;
+          Color=rgb(255,204,153)
+        Case &quot;array(&quot;&quot;empty&quot;&quot;)&quot;
+          Color=rgb(255,204,153)
+        Case &quot;menu&quot;
+          Color=rgb(230,230,255)
+    end select
+    if (Color &lt; 0) then F.getCellRangeByPosition(0,i,EndLigne,i).IsCellBackgroundTransparent=true
+    if (Color&gt;=0) then F.getCellRangeByPosition(0,i,EndLigne,i).CellBackColor=Color
+    if (FColor&gt;=0) then F.getCellRangeByPosition(0,i,EndLigne,i).CharColor=FColor
+    i=i+1
+    &apos;if (i&gt;10) then Fin=true
+    if (F.getCellByPosition(0,i).formula=&quot;&quot;) then  Empty=Empty+1 else Empty=0
+    if (Empty &gt; 20) then Fin=true
+  wend
 end sub
 
 Sub autoNum()
- dim F as object
- dim i as integer
- dim Fin as boolean,Empty as integer
- dim valeurEnCours as long
- dim typeEnCours as string
- dim valeurPrecedente as long
+  dim F as object
+  dim i as integer
+  dim Fin as boolean,Empty as integer
+  dim valeurEnCours as long
+  dim typeEnCours as string
+  dim valeurPrecedente as long
 
- Fin=false
- valeurPrecedente = 0
- Empty=0
- i=0
- F = thisComponent.currentController.ActiveSheet 
- while not Fin
-  if  (F.getCellByPosition(0,i).formula &lt;&gt; &quot;ATTR&quot; and F.getCellByPosition(0,i).formula &lt;&gt; &quot;MODATTR&quot;) then
-  	Empty=Empty+1
-  else
-    Empty = 0
-    typeEnCours = F.getCellByPosition(6,i).formula
-    bloqueValeur = F.getCellByPosition(17,i).formula
-    if bloqueValeur &lt;&gt; &quot;&quot; then
-    	valeurEnCours =  CLng(bloqueValeur)
+  Fin=false
+  valeurPrecedente = 0
+  valeurMenuPrecedente = 10000
+  Empty=0
+  i=0
+  F = thisComponent.currentController.ActiveSheet
+  while not Fin
+    if  (F.getCellByPosition(0,i).formula &lt;&gt; &quot;ATTR&quot; and F.getCellByPosition(0,i).formula &lt;&gt; &quot;MODATTR&quot;) then
+      Empty=Empty+1
     else
-	    if typeEnCours = &quot;tab&quot; then
-	    	valeurEnCours = valeurPrecedente - (valeurPrecedente MOD 1000) + 1000
-	    else
-		    if typeEnCours = &quot;frame&quot; then
-		    	valeurEnCours = valeurPrecedente - (valeurPrecedente MOD 100) + 100
-		    else
-		    	valeurEnCours = valeurPrecedente + 10
-		    end if
+      Empty = 0
+      typeEnCours = F.getCellByPosition(6,i).formula
+      bloqueValeur = F.getCellByPosition(17,i).formula
+      if bloqueValeur &lt;&gt; &quot;&quot; then
+        valeurEnCours =  CLng(bloqueValeur)
+      else
+        if typeEnCours = &quot;tab&quot; then
+          valeurEnCours = valeurPrecedente - (valeurPrecedente MOD 1000) + 1000
+        else
+          if typeEnCours = &quot;frame&quot; then
+            valeurEnCours = valeurPrecedente - (valeurPrecedente MOD 100) + 100
+          else
+          	if typeEnCours = &quot;menu&quot; then
+          		valeurEnCours = valeurMenuPrecedente + 10
+          	else
+            	valeurEnCours = valeurPrecedente + 10
+            end if	
+          end if
+        end if
+      end if
+      if bloqueValeur &lt;&gt; &quot;-&quot; or  bloqueValeur &lt;&gt; &quot;-0&quot; then
+        if  typeEnCours = &quot;menu&quot; then
+        	F.getCellByPosition(7,i).value = valeurEnCours
+	        valeurMenuPrecedente = valeurEnCours
+        else
+	        F.getCellByPosition(7,i).value = valeurEnCours
+	        valeurPrecedente = valeurEnCours
 	    end if
-	end if
-	if bloqueValeur &lt;&gt; &quot;-&quot; then
-    	F.getCellByPosition(7,i).value = valeurEnCours
-    	valeurPrecedente = valeurEnCours
-   	end if
-  end if
-   if (Empty &gt; 30) then Fin=true
-  i=i+1
- wend
+      end if
+    end if
+    if (Empty &gt; 30) then Fin=true
+    i=i+1
+  wend
 
 end sub
 
 Sub autoReset()
- dim F as object
- dim i as integer
- dim Fin as boolean,Empty as integer
- dim valeurEnCours as integer
- dim typeEnCours as string
- dim valeurPrecedente as integer
+  dim F as object
+  dim i as integer
+  dim Fin as boolean,Empty as integer
+  dim valeurEnCours as integer
+  dim typeEnCours as string
+  dim valeurPrecedente as integer
 
- Fin=false
- Empty=0
- i=0
- F = thisComponent.currentController.ActiveSheet 
- while not Fin
-  if  (F.getCellByPosition(0,i).formula &lt;&gt; &quot;PROFIL&quot;) then
-  	Empty=Empty+1
-  else
-    Empty = 0
-    F.getCellByPosition(3,i).formula = &quot;RESET&quot;
-  end if
-   if (Empty &gt; 100) then Fin=true
-  i=i+1
- wend
+  Fin=false
+  Empty=0
+  i=0
+  F = thisComponent.currentController.ActiveSheet
+  while not Fin
+    if  (F.getCellByPosition(0,i).formula &lt;&gt; &quot;PROFIL&quot;) then
+      Empty=Empty+1
+    else
+      Empty = 0
+      F.getCellByPosition(3,i).formula = &quot;RESET&quot;
+    end if
+    if (Empty &gt; 100) then Fin=true
+    i=i+1
+  wend
 
 end sub
 
 
 Sub setDefaultOption()
- dim F as object
- dim i as integer
- dim Fin as boolean,Empty as integer
- dim valeurEnCours as integer
- dim typeEnCours as string
- dim valeurPrecedente as integer
+  dim F as object
+  dim i as integer
+  dim Fin as boolean,Empty as integer
+  dim valeurEnCours as integer
+  dim typeEnCours as string
+  dim valeurPrecedente as integer
 
- Fin=false
- Empty=0
- i=0
- F = thisComponent.currentController.ActiveSheet 
- while not Fin
-  if  (F.getCellByPosition(0,i).formula &lt;&gt; &quot;ATTR&quot;) then
-  	Empty=Empty+1
-  else
-	  if (F.getCellByPosition(8,i).formula = &quot;&quot;) then
-	  	F.getCellByPosition(8,i).formula = &quot;W&quot;
-	  endif
-	  if (F.getCellByPosition(5,i).formula = &quot;&quot;) then
-	  	F.getCellByPosition(5,i).formula = &quot;N&quot;
-	  endif
-	  if (F.getCellByPosition(4,i).formula = &quot;&quot;) then
-	  	F.getCellByPosition(4,i).formula = &quot;N&quot;
-	  endif
-	  if (F.getCellByPosition(6,i).formula = &quot;htmltext&quot; and F.getCellByPosition(15,i).formula = &quot;&quot;) then
-	  	F.getCellByPosition(15,i).formula = &quot;toolbar=Basic|toolbarexpand=no&quot;
-	  elseif (F.getCellByPosition(6,i).formula = &quot;enum&quot; and F.getCellByPosition(15,i).formula = &quot;&quot;) then
-	  	F.getCellByPosition(15,i).formula = &quot;bmenu=no|eunset=yes|system=yes&quot;
-	  elseif (F.getCellByPosition(6,i).formula = &quot;array&quot; and F.getCellByPosition(15,i).formula = &quot;&quot;) then
-	  	F.getCellByPosition(15,i).formula = &quot;vlabel=up&quot;
-	  endif
-    elseif (F.getCellByPosition(6,i).formula = &quot;longtext&quot; and F.getCellByPosition(15,i).formula = &quot;&quot;) then
-      F.getCellByPosition(15,i).formula = &quot;editheight=4em&quot;
+  Fin=false
+  Empty=0
+  i=0
+  F = thisComponent.currentController.ActiveSheet
+  while not Fin
+    if  (F.getCellByPosition(0,i).formula &lt;&gt; &quot;ATTR&quot;) then
+      Empty=Empty+1
+    else
+      if (F.getCellByPosition(8,i).formula = &quot;&quot;) then
+        F.getCellByPosition(8,i).formula = &quot;W&quot;
+      endif
+      if (F.getCellByPosition(5,i).formula = &quot;&quot;) then
+        F.getCellByPosition(5,i).formula = &quot;N&quot;
+      endif
+      if (F.getCellByPosition(4,i).formula = &quot;&quot;) then
+        F.getCellByPosition(4,i).formula = &quot;N&quot;
+      endif
+      if (F.getCellByPosition(6,i).formula = &quot;htmltext&quot; and F.getCellByPosition(15,i).formula = &quot;&quot;) then
+        F.getCellByPosition(15,i).formula = &quot;toolbar=Basic|toolbarexpand=no&quot;
+      elseif (F.getCellByPosition(6,i).formula = &quot;enum&quot; and F.getCellByPosition(15,i).formula = &quot;&quot;) then
+        F.getCellByPosition(15,i).formula = &quot;bmenu=no|eunset=yes|system=yes&quot;
+      elseif (F.getCellByPosition(6,i).formula = &quot;array&quot; and F.getCellByPosition(15,i).formula = &quot;&quot;) then
+        F.getCellByPosition(15,i).formula = &quot;vlabel=up&quot;
+      elseif (F.getCellByPosition(6,i).formula = &quot;longtext&quot; and F.getCellByPosition(15,i).formula = &quot;&quot;) then
+        F.getCellByPosition(15,i).formula = &quot;editheight=4em&quot;
+      endif
     endif
-  endif
-  if (Empty &gt; 100) then Fin=true
-  i=i+1
- wend
+    if (Empty &gt; 100) then Fin=true
+    i=i+1
+  wend
 
 end sub
 
 Sub setParent()
- dim F as object
- dim i as integer
- dim Fin as boolean,Empty as integer
- dim valeurEnCours as integer
- dim typeEnCours as string
- dim structurantEnCours as string
- dim valeurPrecedente as integer
+  dim F as object
+  dim i as integer
+  dim Fin as boolean,Empty as integer
+  dim valeurEnCours as integer
+  dim typeEnCours as string
+  dim structurantEnCours as string
+  dim valeurPrecedente as integer
 
- Fin=false
- Empty=0
- i=0
- F = thisComponent.currentController.ActiveSheet 
- while not Fin
-  if  (F.getCellByPosition(0,i).formula &lt;&gt; &quot;ATTR&quot;) then
-  	Empty=Empty+1
-  else
-	  if ((F.getCellByPosition(2,i).formula = &quot;&quot;) and (F.getCellByPosition(6,i).formula &lt;&gt; &quot;frame&quot; and F.getCellByPosition(6,i).formula &lt;&gt; &quot;tab&quot;  and F.getCellByPosition(6,i).formula &lt;&gt; &quot;menu&quot;)) then
-	  	F.getCellByPosition(2,i).formula = structurantEnCours
-	  endif
-	  if F.getCellByPosition(6,i).formula = &quot;frame&quot; or F.getCellByPosition(6,i).formula = &quot;array&quot; then
-	  	structurantEnCours = F.getCellByPosition(1,i).formula
-	  endif
-  endif
-  if (Empty &gt; 100) then Fin=true
-  i=i+1
- wend
+  Fin=false
+  Empty=0
+  i=0
+  F = thisComponent.currentController.ActiveSheet
+  while not Fin
+    if  (F.getCellByPosition(0,i).formula &lt;&gt; &quot;ATTR&quot;) then
+      Empty=Empty+1
+    else
+      if ((F.getCellByPosition(2,i).formula = &quot;&quot;) and (F.getCellByPosition(6,i).formula &lt;&gt; &quot;frame&quot; and F.getCellByPosition(6,i).formula &lt;&gt; &quot;tab&quot;  and F.getCellByPosition(6,i).formula &lt;&gt; &quot;menu&quot;)) then
+        F.getCellByPosition(2,i).formula = structurantEnCours
+      endif
+      if F.getCellByPosition(6,i).formula = &quot;frame&quot; or F.getCellByPosition(6,i).formula = &quot;array&quot; then
+        structurantEnCours = F.getCellByPosition(1,i).formula
+      endif
+    endif
+    if (Empty &gt; 100) then Fin=true
+    i=i+1
+  wend
 
 end sub
 
 
 Sub setIdealSize()
-   F = thisComponent.currentController.ActiveSheet 
-   oColumns = F.getColumns() 
-   oColumns.getByName( &quot;A&quot; ).Width = 1529
-   oColumns.getByName( &quot;B&quot; ).Width = 6267
-   oColumns.getByName( &quot;C&quot; ).Width = 5000
-   oColumns.getByName( &quot;D&quot; ).Width = 5000
-   oColumns.getByName( &quot;E&quot; ).Width = 554
-   oColumns.getByName( &quot;F&quot; ).Width = 554
-   oColumns.getByName( &quot;G&quot; ).Width = 3185
-   oColumns.getByName( &quot;H&quot; ).Width = 1339
-   oColumns.getByName( &quot;I&quot; ).Width = 635
-   oColumns.getByName( &quot;J&quot; ).Width = 554
-   oColumns.getByName( &quot;K&quot; ).Width = 1092
-   oColumns.getByName( &quot;L&quot; ).Width = 1475
-   oColumns.getByName( &quot;M&quot; ).Width = 10200
-   oColumns.getByName( &quot;N&quot; ).Width = 1155
-   oColumns.getByName( &quot;O&quot; ).Width = 2787
-   oColumns.getByName( &quot;P&quot; ).Width = 4646
+  F = thisComponent.currentController.ActiveSheet
+  oColumns = F.getColumns()
+  oColumns.getByName( &quot;A&quot; ).Width = 1529
+  oColumns.getByName( &quot;B&quot; ).Width = 6267
+  oColumns.getByName( &quot;C&quot; ).Width = 5000
+  oColumns.getByName( &quot;D&quot; ).Width = 5000
+  oColumns.getByName( &quot;E&quot; ).Width = 554
+  oColumns.getByName( &quot;F&quot; ).Width = 554
+  oColumns.getByName( &quot;G&quot; ).Width = 3185
+  oColumns.getByName( &quot;H&quot; ).Width = 1339
+  oColumns.getByName( &quot;I&quot; ).Width = 635
+  oColumns.getByName( &quot;J&quot; ).Width = 554
+  oColumns.getByName( &quot;K&quot; ).Width = 1092
+  oColumns.getByName( &quot;L&quot; ).Width = 1475
+  oColumns.getByName( &quot;M&quot; ).Width = 10200
+  oColumns.getByName( &quot;N&quot; ).Width = 1155
+  oColumns.getByName( &quot;O&quot; ).Width = 2787
+  oColumns.getByName( &quot;P&quot; ).Width = 4646
 
+end sub
+
+sub colorAndSize()
+  dim F as object
+  dim i as integer, j as integer, nbLig as integer, Lig as integer
+  dim Color as long  , FColor as long
+  dim Fin as boolean,Empty as integer
+  dim EndLigne as integer
+
+  EndLigne = 255
+  Fin=false
+  Empty=0
+  i=0
+  F = thisComponent.currentController.ActiveSheet
+  oColumns = F.getColumns()
+  oColumns.getByName( &quot;A&quot; ).Width = 1529
+  oColumns.getByName( &quot;B&quot; ).Width = 6267
+  oColumns.getByName( &quot;C&quot; ).Width = 5000
+  oColumns.getByName( &quot;D&quot; ).Width = 5000
+  oColumns.getByName( &quot;E&quot; ).Width = 554
+  oColumns.getByName( &quot;F&quot; ).Width = 554
+  oColumns.getByName( &quot;G&quot; ).Width = 3185
+  oColumns.getByName( &quot;H&quot; ).Width = 1339
+  oColumns.getByName( &quot;I&quot; ).Width = 635
+  oColumns.getByName( &quot;J&quot; ).Width = 554
+  oColumns.getByName( &quot;K&quot; ).Width = 1092
+  oColumns.getByName( &quot;L&quot; ).Width = 1475
+  oColumns.getByName( &quot;M&quot; ).Width = 10200
+  oColumns.getByName( &quot;N&quot; ).Width = 1155
+  oColumns.getByName( &quot;O&quot; ).Width = 2787
+  oColumns.getByName( &quot;P&quot; ).Width = 4646
+  while not Fin
+    Color=-1
+    FColor=-1
+    select Case F.getCellByPosition(0,i).formula
+      Case &quot;MODATTR&quot;
+        FColor=rgb(40,105,193)
+        Case &quot;DEFAULT&quot;
+          FColor=rgb(40,119,56)
+        Case &quot;END&quot;
+          Color=rgb(234,169,76)
+          FColor=rgb(0,0,0)
+        Case &quot;BEGIN&quot;
+          Color=rgb(234,169,76)
+          FColor=rgb(0,0,0)
+        Case &quot;ATTR&quot;
+          Color=rgb(255,255,255)
+          Color=-1
+          FColor=rgb(0,0,0)
+        Case &quot;PROFIL&quot;
+          Color=rgb(230,165,228)
+        Case &quot;ACCESS&quot;
+          Color=rgb(247,206,167)
+        Case &quot;ORDER&quot;
+          Color=rgb(250,237,86)
+        Case &quot;//&quot;
+          Color=rgb(247,240,167)
+        Case &quot;//ATTR&quot;
+          Color=rgb(247,240,167)
+      end select
+      select Case F.getCellByPosition(6,i).formula
+        Case &quot;frame&quot;
+          Color=rgb(204,255,204)
+        Case &quot;tab&quot;
+          Color=rgb(204,204,255)
+        Case &quot;array&quot;
+          Color=rgb(255,204,153)
+        Case &quot;array(&quot;&quot;empty&quot;&quot;)&quot;
+          Color=rgb(255,204,153)
+        Case &quot;menu&quot;
+          Color=rgb(230,230,255)
+    end select
+    if (Color &lt; 0) then F.getCellRangeByPosition(0,i,EndLigne,i).IsCellBackgroundTransparent=true
+    if (Color&gt;=0) then F.getCellRangeByPosition(0,i,EndLigne,i).CellBackColor=Color
+    if (FColor&gt;=0) then F.getCellRangeByPosition(0,i,EndLigne,i).CharColor=FColor
+    i=i+1
+    &apos;if (i&gt;10) then Fin=true
+    if (F.getCellByPosition(0,i).formula=&quot;&quot;) then  Empty=Empty+1 else Empty=0
+    if (Empty &gt; 20) then Fin=true
+  wend
 end sub
 </script:module>
