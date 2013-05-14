@@ -32,7 +32,7 @@ addJsInline("function getUrlVars() {\
 	return vars;\
 }\
 $(document).ready( function() { \
-C = new Fdl.Context({url:window.location.protocol+'//'+window.location.hostname+window.location.pathname.substr(0,window.location.pathname.indexOf('/lib/'))});\
+C = new Fdl.Context({url:window.location.protocol+'//'+window.location.host+window.location.pathname.substr(0,window.location.pathname.indexOf('/lib/'))});\
 	var docRef = {\
 			id : getUrlVars()['id']\
 	};\
